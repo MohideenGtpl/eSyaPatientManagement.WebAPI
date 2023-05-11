@@ -1,0 +1,12 @@
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\bin\Release\netcoreapp2.2\eSyaPatientManagement.IF.deps.json
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\bin\Release\netcoreapp2.2\eSyaPatientManagement.IF.dll
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\bin\Release\netcoreapp2.2\eSyaPatientManagement.IF.pdb
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\bin\Release\netcoreapp2.2\eSyaPatientManagement.DO.dll
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\bin\Release\netcoreapp2.2\eSyaPatientManagement.DO.pdb
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\obj\Release\netcoreapp2.2\eSyaPatientManagement.IF.csprojAssemblyReference.cache
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\obj\Release\netcoreapp2.2\eSyaPatientManagement.IF.csproj.CoreCompileInputs.cache
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\obj\Release\netcoreapp2.2\eSyaPatientManagement.IF.AssemblyInfoInputs.cache
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\obj\Release\netcoreapp2.2\eSyaPatientManagement.IF.AssemblyInfo.cs
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\obj\Release\netcoreapp2.2\eSyaPatientManagement.IF.csproj.CopyComplete
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\obj\Release\netcoreapp2.2\eSyaPatientManagement.IF.dll
+D:\eSya Project\Solution\Project_eSyaWebAPI\eSyaPatientManagement.WebAPI\trunk\eSyaPatientManagement.IF\eSyaPatientManagement.IF\obj\Release\netcoreapp2.2\eSyaPatientManagement.IF.pdb

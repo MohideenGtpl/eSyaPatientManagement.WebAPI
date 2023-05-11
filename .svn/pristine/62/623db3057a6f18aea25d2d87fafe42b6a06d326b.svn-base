@@ -1,0 +1,17 @@
+﻿using eSyaPatientManagement.DO;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eSyaPatientManagement.IF
+{
+    public interface IOpRegistrationBillingRepository
+    {
+        Task<DO_ResponseParameter> InsertOPRegistrationVisit(DO_OPRegistrationVisit obj);
+
+        Task<List<DO_PatientRegisteredList>> GetPatientRegisteredList(
+           int businessKey, DateTime fromDate, DateTime toDate,
+            int? clinicTypeId, int? patientTypeId, long? uhid);
+    }
+}

@@ -1,0 +1,254 @@
+﻿using eSyaPatientManagement.DL.Entities;
+using eSyaPatientManagement.DO;
+using eSyaPatientManagement.DO.StaticVariables;
+using eSyaPatientManagement.IF;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eSyaPatientManagement.DL.Repository
+{
+    public class OpPatientVisitDetailRepository: IOpPatientVisitDetailRepository
+    {
+        private eSyaEnterpriseContext _context { get; set; }
+        public OpPatientVisitDetailRepository(eSyaEnterpriseContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<DO_PatientRegisteredList>> GetPatientRegisteredList(
+      int businessKey, DateTime visitFromDate, DateTime visitTillDate,
+       int? clinicTypeId, int? patientTypeId, long? uhid)
+        {
+            try
+            {
+                var ac = _context.GtEcapcd.Where(w => (w.CodeType == CodeTypeValues.PatientType
+                        || w.CodeType == CodeTypeValues.PatientCategory
+                        || w.CodeType == CodeTypeValues.RateType));
+
+                var op_Visit = await _context.GtEfopvd
+                      .Join(_context.GtEfoppr,
+                        o => new { o.BusinessKey, o.RUhid },
+                        p => new { p.BusinessKey, p.RUhid },
+                        (o, p) => new { o, p })
+                    .GroupJoin(_context.GtPtrgci.Where(w=> w.ClinicId == (clinicTypeId ?? w.ClinicId)),
+                        op => new { op.o.BusinessKey, op.o.RUhid, op.o.Opnumber },
+                        c => new { c.BusinessKey, c.RUhid, c.Opnumber },
+                        (o, c) => new { o, c })
+                    .SelectMany(
+                       x => x.c.DefaultIfEmpty(),
+                       (x, y) => new { op = x.o, c = y })
+                   .Where(w => w.op.o.BusinessKey == businessKey
+                        && (w.op.o.RUhid == (uhid ?? w.op.o.RUhid))
+                        && w.op.o.VisitDate.Date >= visitFromDate.Date
+                        && w.op.o.VisitDate.Date <= visitTillDate.Date
+                        && (w.op.o.GtEfoppc.PatientType == (patientTypeId ?? (w.op.o.GtEfoppc != null ? w.op.o.GtEfoppc.PatientType : 0)))
+                        && w.op.o.ActiveStatus)
+                    .Select(s => new
+                    {
+                        s.op.o.BusinessKey,
+                        s.op.o.RUhid,
+                        s.op.o.Opnumber,
+                        SerialNumber = s.c != null  ? s.c.SerialNumber : 1,
+                        s.op.p.FirstName,
+                        s.op.p.LastName,
+                        s.op.o.VisitDate,
+                        s.op.p.Gender,
+                        s.op.p.AgeYy,
+                        PatientType = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.PatientType : 0,
+                        PatientCategory = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.PatientCategory : 0,
+                        RatePlan = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.RatePlan : 0,
+                        SpecialtyId = s.c != null ? s.c.SpecialtyId : 0,
+                        DoctorId = s.c != null ? s.c.DoctorId : 0,
+                        BillDocumentKey = s.c != null ? s.c.BillDocumentKey : 0
+                    }).ToListAsync();
+
+                var op1 = op_Visit
+                    .GroupJoin(_context.GtEsspcd,
+                        v => v.SpecialtyId,
+                        s => s.SpecialtyId,
+                        (v, s) => new { v, s = s.DefaultIfEmpty().FirstOrDefault() })
+                    .GroupJoin(_context.GtEsdocd,
+                        vs => vs.v.DoctorId,
+                        d => d.DoctorId,
+                        (vs, d) => new { vs, d = d.DefaultIfEmpty().FirstOrDefault() })
+                    .Select(s => new DO_PatientRegisteredList
+                    {
+                        BusinessKey = businessKey,
+                        UHID = s.vs.v.RUhid,
+                        OpNumber = s.vs.v.Opnumber,
+                        SerialNumber = s.vs.v.SerialNumber,
+                        PatientName = s.vs.v.FirstName + " " + s.vs.v.LastName,
+                        VisitDate = s.vs.v.VisitDate,
+                        Gender = s.vs.v.Gender,
+                        Age = s.vs.v.AgeYy.ToString() + " y",
+                        PatientTypeDesc = ac.Where(w => w.ApplicationCode == s.vs.v.PatientType).Select(t => t.CodeDesc).FirstOrDefault(),
+                        PatientCategoryDesc = ac.Where(w => w.ApplicationCode == s.vs.v.PatientCategory).Select(t => t.CodeDesc).FirstOrDefault(),
+                        RatePlanDesc = ac.Where(w => w.ApplicationCode == s.vs.v.RatePlan).Select(t => t.CodeDesc).FirstOrDefault(),
+                        SpecialtyDesc = s.vs.s != null ? s.vs.s.SpecialtyDesc : "",
+                        DoctorName = s.d != null ? s.d.DoctorName : "",
+                        BillDocumentKey = s.vs.v.BillDocumentKey
+                    }).ToList();
+
+                return op1;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<DO_PatientOpVisitDetails> GetPatientOpVisitDetails(int businessKey, long uhid, long opNumber)
+        {
+            var ac = _context.GtEcapcd.Where(w => (w.CodeType == CodeTypeValues.PatientType
+                    || w.CodeType == CodeTypeValues.PatientCategory
+                    || w.CodeType == CodeTypeValues.RateType));
+
+            var op_Visit = await _context.GtEfopvd
+                     .Join(_context.GtEfoppr,
+                       o => new { o.BusinessKey, o.RUhid },
+                       p => new { p.BusinessKey, p.RUhid },
+                       (o, p) => new { o, p })
+                   .GroupJoin(_context.GtPtrgci,
+                       op => new { op.o.BusinessKey, op.o.RUhid, op.o.Opnumber },
+                       c => new { c.BusinessKey, c.RUhid, c.Opnumber },
+                       (o, c) => new { o, c })
+                   .SelectMany(
+                      x => x.c.DefaultIfEmpty(),
+                      (x, y) => new { op = x.o, c = y })
+               .Where(w => w.op.o.BusinessKey == businessKey
+                    && w.op.o.RUhid == uhid
+                    && w.op.o.Opnumber == opNumber
+                    && w.op.o.ActiveStatus)
+                .Select(s => new
+                {
+                    s.op.o.RUhid,
+                    s.op.p.FirstName,
+                    s.op.p.LastName,
+                    s.op.o.VisitDate,
+                    s.op.p.Gender,
+                    s.op.p.AgeYy,
+                    PatientType = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.PatientType : 0,
+                    PatientCategory = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.PatientCategory : 0,
+                    RatePlan = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.RatePlan : 0,
+                    SpecialtyId = s.c != null ? s.c.SpecialtyId : 0,
+                    DoctorId = s.c != null ? s.c.DoctorId : 0
+                }).ToListAsync();
+
+            var op1 = op_Visit
+                .GroupJoin(_context.GtEsspcd,
+                        v => v.SpecialtyId,
+                        s => s.SpecialtyId,
+                        (v, s) => new { v, s = s.DefaultIfEmpty().FirstOrDefault() })
+                .GroupJoin(_context.GtEsdocd,
+                        vs => vs.v.DoctorId,
+                        d => d.DoctorId,
+                        (vs, d) => new { vs, d = d.DefaultIfEmpty().FirstOrDefault() })
+                .Select(s => new DO_PatientOpVisitDetails
+                {
+                    UHID = s.vs.v.RUhid,
+                    PatientName = s.vs.v.FirstName + " " + s.vs.v.LastName,
+                    VisitDate = s.vs.v.VisitDate,
+                    Gender = s.vs.v.Gender,
+                    Age = s.vs.v.AgeYy.ToString() + " y",
+                    PatientType = s.vs.v.PatientType,
+                    PatientTypeDesc = ac.Where(w => w.ApplicationCode == s.vs.v.PatientType).Select(t => t.CodeDesc).FirstOrDefault(),
+                    PatientCategory = s.vs.v.PatientCategory,
+                    PatientCategoryDesc = ac.Where(w => w.ApplicationCode == s.vs.v.PatientCategory).Select(t => t.CodeDesc).FirstOrDefault(),
+                    RatePlan = s.vs.v.RatePlan,
+                    RatePlanDesc = ac.Where(w => w.ApplicationCode == s.vs.v.RatePlan).Select(t => t.CodeDesc).FirstOrDefault(),
+                    SpecialtyId =  s.vs.v.SpecialtyId,
+                    SpecialtyDesc = s.vs.s != null ? s.vs.s.SpecialtyDesc : "",
+                    DoctorId = s.vs.v.DoctorId,
+                    DoctorName = s.d != null ? s.d.DoctorName : ""
+                }).FirstOrDefault();
+
+            return op1;
+        }
+        public async Task<List<DO_PatientRegisteredList>> GetPatientRegisteredListbySearchCriteria(
+    int businessKey, DateTime visitFromDate, DateTime visitTillDate,
+     int? clinicTypeId, int? patientTypeId, long? uhid, string patientname)
+        {
+            try
+            {
+                var ac = _context.GtEcapcd.Where(w => (w.CodeType == CodeTypeValues.PatientType
+                        || w.CodeType == CodeTypeValues.PatientCategory
+                        || w.CodeType == CodeTypeValues.RateType));
+
+                var op_Visit = await _context.GtEfopvd
+                      .Join(_context.GtEfoppr,
+                        o => new { o.BusinessKey, o.RUhid },
+                        p => new { p.BusinessKey, p.RUhid },
+                        (o, p) => new { o, p })
+                    .GroupJoin(_context.GtPtrgci.Where(w => w.ClinicId == (clinicTypeId ?? w.ClinicId)),
+                        op => new { op.o.BusinessKey, op.o.RUhid, op.o.Opnumber },
+                        c => new { c.BusinessKey, c.RUhid, c.Opnumber },
+                        (o, c) => new { o, c })
+                    .SelectMany(
+                       x => x.c.DefaultIfEmpty(),
+                       (x, y) => new { op = x.o, c = y })
+                   .Where(w => w.op.o.BusinessKey == businessKey
+                        && (w.op.o.RUhid == (uhid ?? w.op.o.RUhid))
+                        && w.op.o.VisitDate.Date >= visitFromDate.Date
+                        && w.op.o.VisitDate.Date <= visitTillDate.Date
+                        && (w.op.o.GtEfoppc.PatientType == (patientTypeId ?? (w.op.o.GtEfoppc != null ? w.op.o.GtEfoppc.PatientType : 0)))
+                        && w.op.o.ActiveStatus
+                        && w.op.p.FirstName.StartsWith(patientname ?? w.op.p.FirstName))
+                    .Select(s => new
+                    {
+                        s.op.o.BusinessKey,
+                        s.op.o.RUhid,
+                        s.op.o.Opnumber,
+                        SerialNumber = s.c != null ? s.c.SerialNumber : 1,
+                        s.op.p.FirstName,
+                        s.op.p.LastName,
+                        s.op.o.VisitDate,
+                        s.op.p.Gender,
+                        s.op.p.AgeYy,
+                        PatientType = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.PatientType : 0,
+                        PatientCategory = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.PatientCategory : 0,
+                        RatePlan = s.op.o.GtEfoppc != null ? s.op.o.GtEfoppc.RatePlan : 0,
+                        SpecialtyId = s.c != null ? s.c.SpecialtyId : 0,
+                        DoctorId = s.c != null ? s.c.DoctorId : 0,
+                        BillDocumentKey = s.c != null ? s.c.BillDocumentKey : 0
+                    }).ToListAsync();
+
+                var op1 = op_Visit
+                    .GroupJoin(_context.GtEsspcd,
+                        v => v.SpecialtyId,
+                        s => s.SpecialtyId,
+                        (v, s) => new { v, s = s.DefaultIfEmpty().FirstOrDefault() })
+                    .GroupJoin(_context.GtEsdocd,
+                        vs => vs.v.DoctorId,
+                        d => d.DoctorId,
+                        (vs, d) => new { vs, d = d.DefaultIfEmpty().FirstOrDefault() })
+                    .Select(s => new DO_PatientRegisteredList
+                    {
+                        BusinessKey = businessKey,
+                        UHID = s.vs.v.RUhid,
+                        OpNumber = s.vs.v.Opnumber,
+                        SerialNumber = s.vs.v.SerialNumber,
+                        PatientName = s.vs.v.FirstName + " " + s.vs.v.LastName,
+                        VisitDate = s.vs.v.VisitDate,
+                        Gender = s.vs.v.Gender,
+                        Age = s.vs.v.AgeYy.ToString() + " y",
+                        PatientTypeDesc = ac.Where(w => w.ApplicationCode == s.vs.v.PatientType).Select(t => t.CodeDesc).FirstOrDefault(),
+                        PatientCategoryDesc = ac.Where(w => w.ApplicationCode == s.vs.v.PatientCategory).Select(t => t.CodeDesc).FirstOrDefault(),
+                        RatePlanDesc = ac.Where(w => w.ApplicationCode == s.vs.v.RatePlan).Select(t => t.CodeDesc).FirstOrDefault(),
+                        SpecialtyDesc = s.vs.s != null ? s.vs.s.SpecialtyDesc : "",
+                        DoctorName = s.d != null ? s.d.DoctorName : "",
+                        BillDocumentKey = s.vs.v.BillDocumentKey
+                    }).ToList();
+
+                return op1;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+    }
+}

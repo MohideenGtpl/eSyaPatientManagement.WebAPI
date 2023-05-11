@@ -1,0 +1,51 @@
+﻿using eSyaPatientManagement.DL.Entities;
+using eSyaPatientManagement.DO;
+using eSyaPatientManagement.IF;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eSyaPatientManagement.DL.Repository
+{
+    public class OpBillingRepository : IOpBillingRepository
+    {
+        private eSyaEnterpriseContext _context { get; set; }
+        private IBillingTransactionRepository _billingTransactionRepository;
+        private IReceiptTransactionRepository _receiptTransactionRepository;
+        public OpBillingRepository(eSyaEnterpriseContext context, IBillingTransactionRepository billingTransactionRepository, IReceiptTransactionRepository receiptTransactionRepository)
+        {
+            _context = context;
+            _billingTransactionRepository = billingTransactionRepository;
+            _receiptTransactionRepository = receiptTransactionRepository;
+        }
+
+        public async Task<DO_ResponseParameter> InsertOpBilling(DO_PatientBillHeader obj_Bill, List<DO_PaymentReceipt> obj_PR)
+        {
+
+            var dbContext = _context.Database.BeginTransaction();
+
+            var billingResponse = await _billingTransactionRepository.InsertBillingTransaction(_context, obj_Bill);
+
+            foreach (DO_PaymentReceipt r in obj_PR)
+            {
+                r.BillDocumentKey = billingResponse.Key;
+                await _receiptTransactionRepository.InsertPatientReceipt(_context, r);
+            }
+
+            try
+            {
+                bool warning = false;
+                string warningMessage = "";
+
+                await _context.SaveChangesAsync();
+                dbContext.Commit();
+                return new DO_ResponseParameter { Warning = warning, WarningMessage = warningMessage, Status = true };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+    }
+}

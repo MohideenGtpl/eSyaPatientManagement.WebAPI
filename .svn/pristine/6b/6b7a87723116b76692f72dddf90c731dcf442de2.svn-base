@@ -1,0 +1,12 @@
+{
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "dev": "Server=103.227.97.123,1433;Database=eSya_DrDiaa;user id=esya;password=Gt@pl#20;",
+    "prod": "Server=103.227.97.123,1433;Database=eSyaEnterprise_Prod;user id=esya;password=Gt@pl#20;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace eSyaPatientManagement.DO.StaticVariables
+{
+    public class VoucherTransactionType
+    {
+        public const string Consultation_Billing = "OP";
+        public const string Op_Billing = "OP";
+        public const string Suspend_Op_Billing = "SO";
+    }
+}

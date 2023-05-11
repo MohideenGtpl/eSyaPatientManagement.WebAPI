@@ -1,0 +1,84 @@
+﻿using eSyaPatientManagement.DL.Entities;
+using eSyaPatientManagement.DL.Utility;
+using eSyaPatientManagement.DO;
+using eSyaPatientManagement.DO.StaticVariables;
+using eSyaPatientManagement.IF;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eSyaPatientManagement.DL.Repository
+{
+    public class ReceiptMasterRepository: IReceiptMasterRepository
+    {
+        private eSyaEnterpriseContext _context { get; set; }
+        public ReceiptMasterRepository(eSyaEnterpriseContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<DO_PaymentMode>> GetPaymentMode()
+        {
+            var ap = await _context.GtEcpyid
+                    .Join(_context.GtEcapcd,
+                         p => p.PaymentModeId,
+                         a => a.ApplicationCode,
+                         (p, a) => new { p, a })
+               .Where(w => w.a.CodeType == CodeTypeValues.PaymentMode
+                            && w.p.ActiveStatus
+                            && w.a.ActiveStatus)
+               .Select(r => new DO_PaymentMode
+               {
+                   PaymentModeId = r.a.ApplicationCode,
+                   PaymentModeCode = r.a.ShortCode,
+                   PaymentModeDesc = r.a.CodeDesc,
+                   //L_PaymentModeCategory = _context.GtEcpyid
+                   //                     .Join(_context.GtEcapcd,
+                   //                          p => p.PaymentModeCategoryId,
+                   //                          a => a.ApplicationCode,
+                   //                          (p, a) => new { p, a })
+                   //                    .Where(w => w.a.CodeType == CodeTypeValues.PaymentModeCategory
+                   //                             && w.p.ActiveStatus
+                   //                             && w.a.ActiveStatus)
+                   //                    .Select(c => new DO_PaymentModeCategory
+                   //                     {
+                   //                                 PaymentModeCategoryId = c.a.ApplicationCode,
+                   //                                 PaymentModeCode = c.a.ShortCode,
+                   //                                 PaymentModeCategoryDesc = c.a.CodeDesc
+                   //                     }).ToList()
+
+               }).Distinct().ToListAsync();
+            if (ap.Count > 0)
+            {
+                ap.GroupBy(y => y.PaymentModeId, (key, grp) => grp.FirstOrDefault());
+
+            }
+            return ap;
+        }
+
+        public async Task<List<DO_PaymentModeCategory>> GetPaymentModeCategoryById(int paymentModeId)
+        {
+            var ap = await _context.GtEcpyid
+                    .Join(_context.GtEcapcd,
+                         p => p.PaymentModeCategoryId,
+                         a => a.ApplicationCode,
+                         (p, a) => new { p, a })
+               .Where(w => w.p.PaymentModeId == paymentModeId
+                            && w.a.CodeType == CodeTypeValues.PaymentModeCategory 
+                            && w.p.ActiveStatus
+                            && w.a.ActiveStatus)
+               .Select(r => new DO_PaymentModeCategory
+               {
+                   PaymentId = r.p.PaymentId,
+                   PaymentModeCategoryId = r.a.ApplicationCode,
+                   PaymentModeCode = r.a.ShortCode,
+                   PaymentModeCategoryDesc = r.a.CodeDesc
+               }).ToListAsync();
+
+            return ap;
+        }
+    }
+}

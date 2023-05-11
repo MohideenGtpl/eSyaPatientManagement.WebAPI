@@ -1,0 +1,328 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI.csproj": {}
+  },
+  "projects": {
+    "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL.csproj",
+        "projectName": "eSyaPatientManagement.DL",
+        "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL.csproj",
+        "packagesPath": "C:\\Users\\rmohi\\.nuget\\packages\\",
+        "outputPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\rmohi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "targetAlias": "netcoreapp2.2",
+            "projectReferences": {
+              "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj": {
+                "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj"
+              },
+              "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF.csproj": {
+                "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "targetAlias": "netcoreapp2.2",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "target": "Package",
+              "version": "[2.2.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.2.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer.Design": {
+              "target": "Package",
+              "version": "[1.1.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.6, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj",
+        "projectName": "eSyaPatientManagement.DO",
+        "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj",
+        "packagesPath": "C:\\Users\\rmohi\\.nuget\\packages\\",
+        "outputPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\rmohi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "targetAlias": "netcoreapp2.2",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "targetAlias": "netcoreapp2.2",
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF.csproj",
+        "projectName": "eSyaPatientManagement.IF",
+        "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF.csproj",
+        "packagesPath": "C:\\Users\\rmohi\\.nuget\\packages\\",
+        "outputPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\rmohi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "targetAlias": "netcoreapp2.2",
+            "projectReferences": {
+              "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj": {
+                "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "targetAlias": "netcoreapp2.2",
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI.csproj",
+        "projectName": "eSyaPatientManagement.WebAPI",
+        "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI.csproj",
+        "packagesPath": "C:\\Users\\rmohi\\.nuget\\packages\\",
+        "outputPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.WebAPI\\eSyaPatientManagement.WebAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\rmohi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "targetAlias": "netcoreapp2.2",
+            "projectReferences": {
+              "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL.csproj": {
+                "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL\\eSyaPatientManagement.DL.csproj"
+              },
+              "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj": {
+                "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO\\eSyaPatientManagement.DO.csproj"
+              },
+              "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF.csproj": {
+                "projectPath": "D:\\eSya Project\\Solution\\Project_eSyaWebAPI\\eSyaPatientManagement.WebAPI\\trunk\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF\\eSyaPatientManagement.IF.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "targetAlias": "netcoreapp2.2",
+          "dependencies": {
+            "Microsoft.AspNetCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Microsoft.AspNetCore.Razor.Design": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "target": "Package",
+              "version": "[2.2.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.2.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer.Design": {
+              "target": "Package",
+              "version": "[1.1.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.6, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[2.2.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+﻿using eSyaPatientManagement.DO;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eSyaPatientManagement.IF
+{
+    public interface IOpBillingRepository
+    {
+        Task<List<DO_PatientBillDetails>> GetOpDoctorPrescribedServices(int businessKey, long uhid, long opNumber, int rateType, string currencyCode);
+        Task<DO_ResponseParameter> CreateOpBill(DO_PatientBillHeader obj_Bill, List<DO_PaymentReceipt> obj_PR);
+
+        Task<List<DO_OpBillDetail>> GetOpBillList(int businessKey, DateTime billFromDate, DateTime billTillDate);
+
+        Task<List<DO_OpBillDetail>> GetOpBillListbySearchCriteria(int businessKey, DateTime billFromDate, DateTime billTillDate, long? uhid, string patientname);
+    }
+}

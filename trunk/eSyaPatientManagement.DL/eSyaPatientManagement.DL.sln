@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1684
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSyaPatientManagement.DL", "eSyaPatientManagement.DL\eSyaPatientManagement.DL.csproj", "{4A6C9623-F571-4834-A356-1D06DCA7CA75}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A6C9623-F571-4834-A356-1D06DCA7CA75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A6C9623-F571-4834-A356-1D06DCA7CA75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A6C9623-F571-4834-A356-1D06DCA7CA75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A6C9623-F571-4834-A356-1D06DCA7CA75}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9DCDCABC-FC40-4FBE-B58F-963D646FEC48}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,107 @@
+﻿using eSyaPatientManagement.DL.Entities;
+using eSyaPatientManagement.DO;
+using eSyaPatientManagement.IF;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eSyaPatientManagement.DL.Repository
+{
+    public class ClinicalFormsRepository : IClinicalFormsRepository
+    {
+        private eSyaEnterpriseContext _context { get; set; }
+        public ClinicalFormsRepository(eSyaEnterpriseContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<DO_ClinicalInformation>> GetClinicalInformation(int businessKey, long UHID, long vNumber, string clType)
+        {
+
+            var cl = await _context.GtOpclin
+                    .Where(w => w.BusinessKey == businessKey && w.Uhid == UHID && (w.Vnumber == vNumber || w.Vnumber == 0)
+                       && clType.Contains(w.Cltype) && w.ActiveStatus)
+                    .Select(x => new DO_ClinicalInformation
+                    {
+                        CLControlID = x.ClcontrolId,
+                        CLType = x.Cltype,
+                        Value = x.Value,
+                        ValueType = x.ValueType
+                    }).ToListAsync();
+
+
+            return cl;
+
+        }
+
+        public async Task<DO_ResponseParameter> InsertIntoClinicalInformation(DO_ClinicalInformation obj)
+        {
+            var dbContext = _context.Database.BeginTransaction();
+            try
+            {
+                foreach (var c in obj.l_ControlValue)
+                {
+                    var exist = _context.GtOpclin.Where(w => w.BusinessKey == obj.BusinessKey && w.Uhid == obj.UHID && w.Vnumber == obj.VisitNumber && w.ClcontrolId == c.CLControlID).FirstOrDefault();
+                    if (exist != null)
+                    {
+                        if (c.Value == null)
+                        {
+                            exist.ActiveStatus = false;
+                        }
+                        else
+                        {
+                            exist.ValueType = c.ValueType;
+                            exist.Value = c.Value;
+                            exist.ActiveStatus = true;
+                            exist.ModifiedBy = obj.UserID;
+                            exist.ModifiedOn = System.DateTime.Now;
+                            exist.ModifiedTerminal = obj.TerminalID;
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(c.Value))
+                        {
+                            GtOpclin cl = new GtOpclin
+                            {
+                                BusinessKey = obj.BusinessKey,
+                                Uhid = obj.UHID,
+                                Vnumber = obj.VisitNumber,
+                                TransactionId = 0,
+                                TransactionDate = obj.TransactionDate,
+                                Cltype = c.CLType,
+                                ClcontrolId = c.CLControlID,
+                                ValueType = c.ValueType,
+                                Value = c.Value,
+                                ActiveStatus = true,
+                                FormId = obj.FormID,
+                                CreatedBy = obj.UserID,
+                                CreatedOn = System.DateTime.Now,
+                                CreatedTerminal = obj.TerminalID
+                            };
+                            _context.GtOpclin.Add(cl);
+
+                        }
+                    }
+                }
+                await _context.SaveChangesAsync();
+                dbContext.Commit();
+
+                return new DO_ResponseParameter() { Status = true, Message = "Saved Successfully." };
+            }
+            catch (DbUpdateException ex)
+            {
+                dbContext.Rollback();
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                dbContext.Rollback();
+                throw ex;
+            }
+        }
+    }
+}

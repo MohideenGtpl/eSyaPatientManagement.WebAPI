@@ -1,0 +1,122 @@
+﻿using eSyaPatientManagement.DL.Entities;
+using eSyaPatientManagement.DO;
+using eSyaPatientManagement.DO.StaticVariables;
+using eSyaPatientManagement.IF;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eSyaPatientManagement.DL.Repository
+{
+    public class OpBillingRepository : IOpBillingRepository
+    {
+        private eSyaEnterpriseContext _context { get; set; }
+        private IBillingTransactionRepository _billingTransactionRepository;
+        private IReceiptTransactionRepository _receiptTransactionRepository;
+        public OpBillingRepository(eSyaEnterpriseContext context, IBillingTransactionRepository billingTransactionRepository, IReceiptTransactionRepository receiptTransactionRepository)
+        {
+            _context = context;
+            _billingTransactionRepository = billingTransactionRepository;
+            _receiptTransactionRepository = receiptTransactionRepository;
+        }
+
+        public async Task<DO_ResponseParameter> CreateOpBill(DO_PatientBillHeader obj_Bill, List<DO_PaymentReceipt> obj_PR)
+        {
+
+            var dbContext = _context.Database.BeginTransaction();
+
+            obj_Bill.BillType = VoucherTransactionType.Op_Billing;
+
+            var billingResponse = await _billingTransactionRepository.InsertBillingTransaction(_context, obj_Bill);
+
+            foreach (DO_PaymentReceipt r in obj_PR)
+            {
+                r.BusinessKey = obj_Bill.BusinessKey;
+                r.BillDocumentKey = billingResponse.Key;
+                r.TransactionType = VoucherTransactionType.Op_Billing;
+                r.UserID = obj_Bill.UserID;
+                r.TerminalID = obj_Bill.TerminalID;
+                await _receiptTransactionRepository.InsertPatientReceipt(_context, r);
+            }
+
+            try
+            {
+                bool warning = false;
+                string warningMessage = "";
+
+                await _context.SaveChangesAsync();
+                dbContext.Commit();
+                return new DO_ResponseParameter { Status = true, Key = billingResponse.Key, Warning = warning, WarningMessage = warningMessage, };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<DO_PatientBillDetails>> GetOpDoctorPrescribedServices(int businessKey, long uhid, long opNumber, int rateType, string currencyCode)
+        {
+            var prescribed_Services = await _context.GtOpclin
+               .Join(_context.GtEssrms,
+                   d => new { ServiceId = d.Value },
+                   s => new { ServiceId = s.ServiceId.ToString() },
+                   (d, s) => new { d , s })
+               .Join(_context.GtEssrbr
+                    .Where(w => w.RateType == rateType && w.CurrencyCode == currencyCode
+                        && w.ActiveStatus
+                        && DateTime.Now.Date >= w.EffectiveDate.Date
+                        && DateTime.Now.Date <= (w.EffectiveTill ?? DateTime.Now.Date).Date),
+                    ds => new { ds.d.BusinessKey, ds.s.ServiceId },
+                    r => new { r.BusinessKey, r.ServiceId },
+                    (ds, r) => new { ds, r })
+              .Where(w => w.ds.d.BusinessKey == businessKey
+                    && (w.ds.d.Uhid == uhid)
+                    && w.ds.d.Vnumber == opNumber
+                    && w.ds.d.ActiveStatus)
+               .Select(s => new DO_PatientBillDetails
+               {
+                   ServiceId = s.ds.s.ServiceId,
+                   ServiceName = s.ds.s.ServiceDesc,
+                   ServiceRule = s.r.ServiceRule,
+                   DiscountAmount = 0,
+                   Rate = s.r.OpbaseRate
+               }).Distinct().ToListAsync();
+
+            return prescribed_Services;
+        }
+
+        public async Task<List<DO_OpBillDetail>> GetOpBillList(int businessKey, DateTime billFromDate, DateTime billTillDate)
+        {
+            var op_bill = await _context.GtEfpbhd
+               .Join(_context.GtEfoppr,
+                   b => new { b.BusinessKey, b.RUhid },
+                   p => new { p.BusinessKey, p.RUhid },
+                   (b, p) => new { b, p })
+              //.AsNoTracking()
+              .Where(w => w.b.BusinessKey == businessKey
+                    && (w.b.BillType == "OP")
+                    && w.b.DocumentDate.Date >= billFromDate.Date
+                    && w.b.DocumentDate.Date <= billTillDate.Date
+                   && w.b.ActiveStatus)
+               .Select(s => new DO_OpBillDetail
+               {
+                   BillDocumentKey = s.b.BillDocumentKey,
+                   DocumentDate = s.b.DocumentDate,
+                   UHID = s.b.RUhid,
+                   PatientName = s.p.FirstName +" " +s.p.LastName,
+                   OPNumber = s.b.Opnumber,
+                   BillType = s.b.BillType,
+                   TransCurrencyCode = s.b.TransCurrencyCode,
+                   TotalBillAmount = s.b.TotalBillAmount,
+                   TotalDiscountAmount = s.b.TotalDiscountAmount,
+                   TotalConcessionAmount = s.b.TotalConcessionAmount,
+                   NetBillAmount = s.b.NetBillAmount
+               }).ToListAsync();
+
+            return op_bill;
+        }
+    }
+}
